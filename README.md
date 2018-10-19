@@ -5,9 +5,9 @@
 
 Term: Fall 2018
 
-+ Team #
++ Team # 2
 + Team members
-	+ team member 1
+	+ Kehui Zhu, kz2293
 	+ team member 2
 	+ team member 3
 	+ team member 4
