@@ -29,7 +29,8 @@ Set the working directory to the image folder. Specify the training and the test
 
 ```{r wkdir, eval=FALSE}
 set.seed(2018)
-setwd("./ads_fall2018_proj3") 
+setwd("C:/Users/65451_000/Desktop/Columbia/AU 18/5243/ADS_project3_new/Fall2018-Proj3-Sec2--sec2proj3_grp2")
+#setwd("./Fall2018-Proj3-Sec2--sec2proj3_grp2") 
 # here replace it with your own path or manually set it in RStudio to where this rmd file is located. 
 # use relative path for reproducibility
 ```
