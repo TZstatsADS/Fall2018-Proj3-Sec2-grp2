@@ -17,7 +17,13 @@ The portability of this AI program (holding storage and memory cost) and the com
 
 Assume that the *current practice* on your client side is just using [boosted](https://en.wikipedia.org/wiki/Boosting_(machine_learning)) [decision stumps](https://en.wikipedia.org/wiki/Decision_stump) on neighboring pixels (see Tutorial for more detail). `R` pakcage [`gbm`](https://cran.r-project.org/package=gbm) can be used to implement this classifier. 
 
-Your **task** for this project is to 1) implement the *current practice* as the *baseline* model on your system, 2) implement an improvement to the current practice, and 3) evaluate the performance gain of your proposed improvement against the baseline. You should produce an evaluation report using a R notebook (as a file `main.rmd` in the `doc` folder). 
+Your **task** for this project is to 
+
+1) implement the *current practice* as the *baseline* model on your system. (The baseline patch-based algorithm is to build low/high-resolution patch pairs, and learn the best mapping between them.)
+
+2) implement an improvement to the current practice, and 
+
+3) evaluate the performance gain of your proposed improvement against the baseline. You should produce an evaluation report using a R notebook (as a file `main.rmd` in the `doc` folder). 
 
 #### Evaluation criteria 
 - Ease of reproducibility by the client (the instruction team)
@@ -116,4 +122,5 @@ local proj/
 ##### Example starter codes
 
 As an example, you can find in the GitHub starter codes an example using handwritten zipcode data. We will give more examples during tutorials. 
+
 

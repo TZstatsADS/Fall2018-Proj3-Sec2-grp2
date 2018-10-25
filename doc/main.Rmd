@@ -29,7 +29,7 @@ Set the working directory to the image folder. Specify the training and the test
 
 ```{r wkdir, eval=FALSE}
 set.seed(2018)
-setwd("./ads_fall2018_proj3") 
+setwd("../") 
 # here replace it with your own path or manually set it in RStudio to where this rmd file is located. 
 # use relative path for reproducibility
 ```
@@ -85,7 +85,6 @@ extra_label <- read.csv(train_label_path, colClasses=c("NULL", NA, NA))
 
 ```{r feature}
 source("../lib/feature.R")
-
 tm_feature_train <- NA
 if(run.feature.train){
   tm_feature_train <- system.time(dat_train <- feature(train_LR_dir, train_HR_dir))
