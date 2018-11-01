@@ -37,7 +37,7 @@ train <- function(dat_train, label_train, par=NULL){
     featMat <- dat_train[, , c2]
     labMat <- label_train[, c1, c2]
     fit_gbm <- gbm.fit(x=featMat, y=labMat,
-                       n.trees=200,
+                       n.trees = 200, # 200
                        distribution="gaussian",
                        interaction.depth=depth, 
                        bag.fraction = 0.5,

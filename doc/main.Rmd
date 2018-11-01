@@ -84,7 +84,7 @@ extra_label <- read.csv(train_label_path, colClasses=c("NULL", NA, NA))
   + Output: an RData file that contains extracted features and corresponding responses
 
 ```{r feature}
-source("../lib/feature.R")
+source("../lib/feature3.R")
 tm_feature_train <- NA
 if(run.feature.train){
   tm_feature_train <- system.time(dat_train <- feature(train_LR_dir, train_HR_dir))
@@ -157,6 +157,7 @@ tm_train=NA
 tm_train <- system.time(fit_train <- train(feat_train, label_train, par_best))
 save(fit_train, file="../output/fit_train.RData")
 ```
+
 
 ### Step 5: Super-resolution for test images
 Feed the final training model with the completely holdout testing data. 

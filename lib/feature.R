@@ -67,7 +67,7 @@ feature <- function(LR_dir, HR_dir, n_points=1000){
   labMat <- array(NA, c(n_files * n_points, 4, 3))
   
   ### read LR/HR image pairs
-  for(i in c(1:1)){
+  for(i in c(1:5)){
     imgLR <- readImage(paste0(LR_dir,  "img_", sprintf("%04d", i), ".jpg"))
     imgHR <- readImage(paste0(HR_dir,  "img_", sprintf("%04d", i), ".jpg"))
     
