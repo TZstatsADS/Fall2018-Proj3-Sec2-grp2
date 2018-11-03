@@ -6,7 +6,7 @@
 ### Project 3
 
 
-train <- function(dat_train, label_train, par=NULL){
+train_gbm <- function(feat_train, label_train, feature, par=NULL){
   
   ### Train a Gradient Boosting Model (GBM) using processed features from training images
   
@@ -28,14 +28,17 @@ train <- function(dat_train, label_train, par=NULL){
     depth <- par$depth
   }
   
+  
   ### the dimension of response arrat is * x 4 x 3, which requires 12 classifiers
   ### this part can be parallelized
+  if(feature == 'default'|feature ==  'canny'|feature == 'diagonal'){
   for (i in 1:12){
     ## calculate column and channel
     c1 <- (i-1) %% 4 + 1
     c2 <- (i-c1) %/% 4 + 1
-    featMat <- dat_train[, , c2]
+    featMat <- feat_train[, , c2]
     labMat <- label_train[, c1, c2]
+    
     fit_gbm <- gbm.fit(x=featMat, y=labMat,
                        n.trees=200,
                        distribution="gaussian",
@@ -45,6 +48,23 @@ train <- function(dat_train, label_train, par=NULL){
     best_iter <- gbm.perf(fit_gbm, method="OOB", plot.it = FALSE)
     modelList[[i]] <- list(fit=fit_gbm, iter=best_iter)
   }
-  
-  return(modelList)
+    return(modelList)
+  }
+    else {
+    for (i in 1:54){
+      featMat <- feat_train[,i]
+      labMat <- label_train[,i]
+      fit_gbm <- gbm.fit(x=featMat, y=labMat,
+                         n.trees=200,
+                         distribution="gaussian",
+                         interaction.depth=depth, 
+                         bag.fraction = 0.5,
+                         verbose=FALSE)
+      best_iter <- gbm.perf(fit_gbm, method="OOB", plot.it = FALSE)
+      modelList[[i]] <- list(fit=fit_gbm, iter=best_iter)
+    }
+      return(modelList)
+    }
 }
+
+

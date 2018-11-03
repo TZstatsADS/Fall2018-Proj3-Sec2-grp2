@@ -114,7 +114,7 @@ feature_rgb <- function(LR_dir, HR_dir, n_points=1000){
   labMat = matrix(nrow=img_n, ncol=nR*nG*nB)
   
   
-  ### extract RGB features
+ ### extract RGB features
   for (i in 1:n_files){
     imgLR <- readImage(paste0(LR_dir,  "img_", sprintf("%04d", i), ".jpg"))
     imgHR <- readImage(paste0(HR_dir,  "img_", sprintf("%04d", i), ".jpg"))
