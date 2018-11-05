@@ -29,7 +29,7 @@ Set the working directory to the image folder. Specify the training and the test
 
 ```{r wkdir, eval=FALSE}
 set.seed(2018)
-setwd("./ads_fall2018_proj3") 
+setwd("/Users/Yiming/Desktop/Fall2018-Proj3-Sec2--sec2proj3_grp2") 
 # here replace it with your own path or manually set it in RStudio to where this rmd file is located. 
 # use relative path for reproducibility
 ```
@@ -56,6 +56,10 @@ In this chunk, we have a set of controls for the evaluation experiments.
 run.cv=TRUE # run cross-validation on the training set
 K <- 5  # number of CV folds
 run.feature.train=TRUE # process features for training set
+run.hog.feature.train=TRUE
+run.rgb.feature.train=TRUE
+run.canny.feature.train=TRUE
+run.diagonal.feature.train=TRUE
 run.test=TRUE # run evaluation on an independent test set
 run.feature.test=TRUE # process features for test set
 ```
@@ -84,7 +88,7 @@ extra_label <- read.csv(train_label_path, colClasses=c("NULL", NA, NA))
   + Output: an RData file that contains extracted features and corresponding responses
 
 ```{r feature}
-source("../lib/feature.R")
+source("../lib/feature.all.R")
 
 tm_feature_train <- NA
 if(run.feature.train){
@@ -93,8 +97,52 @@ if(run.feature.train){
   label_train <- dat_train$label
 }
 
-#save(dat_train, file="./output/feature_train.RData")
+
 ```
+
+
+```{r}
+tm_feature_hog<-NA
+if(run.hog.feature.train){
+  tm_feature_hog<-system.time(dat_train<-feature_hog(train_LR_dir,train_HR_dir))
+  feat_train<-dat_train$feature
+  label_train<-dat_train$label
+}
+
+```
+
+```{r}
+tm_feature_rgb<-NA
+if(run.rgb.feature.train){
+  tm_feature_rgb<-system.time(dat_train<-feature_rgb(train_LR_dir,train_HR_dir))
+  feat_train<-dat_train$feature
+  label_train<-dat_train$label
+}
+
+```
+
+```{r}
+tm_feature_canny<-NA
+if(run.canny.feature.train){
+  tm_feature_canny<-system.time(dat_train<-feature_canny(train_LR_dir,train_HR_dir))
+  feat_train<-dat_train$feature
+  label_train<-dat_train$label
+}
+
+```
+
+```{r}
+tm_feature_diagonal<-NA
+if(run.diagonal.feature.train){
+  tm_feature_diagonal<-system.time(dat_train<-feature_diagonal(train_LR_dir,train_HR_dir))
+  feat_train<-dat_train$feature
+  label_train<-dat_train$label
+}
+
+```
+
+#save(dat_train, file="./output/feature_train.RData")
+
 
 
 ### Step 4: Train a classification model with training images
@@ -109,7 +157,7 @@ Call the train model and test model from library.
   + Input: an R object that contains a trained classifier.
   + Output: an R object of response predictions on the test set. If there are multiple classifiers under evaluation, there should be multiple sets of label predictions. 
 ```{r loadlib}
-source("../lib/train.R")
+source("../lib/train_all.R")
 source("../lib/test.R")
 ```
 
