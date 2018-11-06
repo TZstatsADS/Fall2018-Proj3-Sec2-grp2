@@ -192,7 +192,7 @@ feature_canny <- function(LR_dir, HR_dir, n_points=1000){
 
 
 
-# Outsider feature
+# diagonal feature
 feature_diagonal <- function(LR_dir, HR_dir, n_points=1000){
   
   ### Construct process features for training images (LR/HR pairs)
@@ -250,7 +250,7 @@ feature_diagonal <- function(LR_dir, HR_dir, n_points=1000){
 
 
 # 24 pixels feature
-feature_diagonal <- function(LR_dir, HR_dir, n_points=1000){
+feature_24 <- function(LR_dir, HR_dir, n_points=1000){
   
   ### Construct process features for training images (LR/HR pairs)
   
@@ -263,7 +263,7 @@ feature_diagonal <- function(LR_dir, HR_dir, n_points=1000){
   n_files <- length(list.files(LR_dir))
   
   ### store feature and responses
-  featMat <- array(NA, c(n_files * n_points, 4, 3))
+  featMat <- array(NA, c(n_files * n_points, 24, 3))
   labMat <- array(NA, c(n_files * n_points, 4, 3))
   
   ### read LR/HR image pairs
@@ -326,4 +326,3 @@ feature_diagonal <- function(LR_dir, HR_dir, n_points=1000){
 }
 
 
-#outsider feature
