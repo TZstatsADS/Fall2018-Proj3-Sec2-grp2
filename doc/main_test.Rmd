@@ -113,7 +113,7 @@ par_best <- list(depth=model_best)
 ```{r final_train}
 tm_train=NA
 tm_train <- system.time(fit_train <- train(feat_train, label_train, par_best))
-tm_train <- system.time(fit_train <- train(feat_train[150000], label_train))
+tm_train <- system.time(fit_train <- train(feat_train[150000, , ], label_train[150000, , ]))
 
 #tm_train <- system.time(fit_train <- xgb_train(feat_train, label_train))
 
