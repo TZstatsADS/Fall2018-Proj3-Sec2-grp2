@@ -36,9 +36,9 @@ feature <- function(LR_dir, HR_dir, n_points=1000){
   
       # supplementary image matrix
       supp_imgLR <- cbind(imgLR[, 1, k], imgLR[, , k], imgLR[, LR_ncol, k])
-      # supp_imgLR <- rbind(cbind(imgLR[1, 1, k], imgLR[1, , k],imgLR[1, LR_ncol, k]), 
-      #                     supp_imgLR, cbind(imgLR[LR_nrow, 1, k], imgLR[LR_nrow, , k],imgLR[LR_nrow, LR_ncol, k]))
-      supp_imgLR <- rbind(supp_imgLR[1, , k], supp_imgLR[, , k], supp_imgLR[LR_nrow, , k])
+      supp_imgLR <- rbind(cbind(imgLR[1, 1, k], imgLR[1, , k],imgLR[1, LR_ncol, k]), 
+                           supp_imgLR, cbind(imgLR[LR_nrow, 1, k], imgLR[LR_nrow, , k],imgLR[LR_nrow, LR_ncol, k]))
+      #supp_imgLR <- rbind(supp_imgLR[1, , k], supp_imgLR[, , k], supp_imgLR[LR_nrow, , k])
       
       supp_imgHR <- imgHR[, , k]
       

@@ -26,7 +26,7 @@ setwd("../")
 # use relative path for reproducibility
 ```
 ```{r}
-train_dir <- "../train_set/" # This will be modified for different data sets.
+train_dir <- "../data/train_set/" # This will be modified for different data sets.
 train_LR_dir <- paste(train_dir, "LR/", sep="")
 train_HR_dir <- paste(train_dir, "HR/", sep="")
 train_label_path <- paste(train_dir, "label.csv", sep="") 
@@ -48,7 +48,7 @@ model_labels = paste("GBM with depth =", model_values)
 
 ### Step 2: import training images class labels.
 ```{r train_label}
-extra_label <- read.csv(train_label_path, colClasses=c("NULL", NA, NA))
+#extra_label <- read.csv(train_label_path, colClasses=c("NULL", NA, NA))
 ```
 
 ### Step 3: construct features and responses
@@ -64,12 +64,13 @@ if(run.feature.train){
 #save(dat_train, file="./output/feature_train.RData")
 ```
 
-#################
 ### Step 4: Train a classification model with training images
 ```{r loadlib}
 source("../lib/train.R")
 source("../lib/test.R")
 ```
+
+#################
 ```{r runcv, message=FALSE, warning=FALSE}
 source("../lib/cross_validation.R")
 
@@ -112,10 +113,10 @@ par_best <- list(depth=model_best)
 * Train the model with the entire training set using the selected model (model parameter) via cross-validation.
 ```{r final_train}
 tm_train=NA
-tm_train <- system.time(fit_train <- train(feat_train, label_train, par_best))
-tm_train <- system.time(fit_train <- train(feat_train[150000, , ], label_train[150000, , ]))
+#tm_train <- system.time(fit_train <- train(feat_train, label_train, par_best))
+tm_train <- system.time(fit_train <- train(feat_train, label_train))
 
-#tm_train <- system.time(fit_train <- xgb_train(feat_train, label_train))
+tm_train <- system.time(fit_train2 <- xgb_train(feat_train, label_train))
 
 
 save(fit_train, file="../output/fit_train.RData")
@@ -123,7 +124,6 @@ save(fit_train, file="../output/fit_train.RData")
 
 
 ### Step 5: Super-resolution for test images
-
 ```{r superresolution}
 source("../lib/superResolution.R")
 # test_dir <- "../data/test_set/" # This will be modified for different data sets.
@@ -133,7 +133,7 @@ source("../lib/superResolution.R")
 tm_test=NA
 if(run.test){
   load(file="../output/fit_train.RData")
-  tm_test <- system.time(superResolution(train_LR_dir, train_HR_dir, fit_train))
+  tm_test <- system.time(PSNR <- superResolution(train_LR_dir, train_HR_dir, fit_train))
 }
 ```
 

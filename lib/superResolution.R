@@ -14,7 +14,7 @@ superResolution <- function(LR_dir, HR_dir, modelList){
   ### load libraries
   library("EBImage")
   n_files <- length(list.files(LR_dir))
-  
+  PSNR <- NULL
   ### read LR/HR image pairs
   for(i in 1:n_files){
     imgLR <- readImage(paste0(LR_dir,  "img", "_", sprintf("%04d", i), ".jpg"))
@@ -55,17 +55,22 @@ superResolution <- function(LR_dir, HR_dir, modelList){
     predMat[, , 2] <- predMat[, , 2] + imgLR[, ,2][cbind(sample_row,sample_col)]
     predMat[, , 3] <- predMat[, , 3] + imgLR[, ,3][cbind(sample_row,sample_col)]
     
-    imgHR_fit <- readImage(paste0(HR_dir,  "img_", sprintf("%04d", i), ".jpg"))
+    imgHR <- imgHR_fit <- readImage(paste0(HR_dir,  "img_", sprintf("%04d", i), ".jpg"))
     base_row <- seq(1, 2 * LR_nrow, 2)
     base_col <- seq(1, 2 * LR_ncol, 2)
-    
     imgHR_fit[base_row, base_col, ] <- predMat[, 1, ]
     imgHR_fit[base_row, base_col + 1, ] <- predMat[, 2, ]
     imgHR_fit[base_row + 1, base_col, ] <- predMat[, 3, ]
     imgHR_fit[base_row + 1, base_col + 1, ] <- predMat[, 4, ]
+    # calculate MSE and PSNR
+    mse <- sum((imgHR - imgHR_fit)^2)/(3*num_ele)
+    psnr <- 20*log10(range(imgHR)[2]) - 10*log10(mse)
+    PSNR <- append(PSNR, psnr)
     #setwd(save_path)
-    writeImage(imgHR_fit, paste0("../data/train_set/SR/","img_fit_", sprintf("%04d", i), ".jpeg"))
+    writeImage(imgHR_fit, paste0("../data/test_set/SR/","img_fit_", sprintf("%04d", i), ".jpeg"))
   }
+  PSNR <- sum(PSNR)/n_files
+  return(PSNR)
 }
 
 
