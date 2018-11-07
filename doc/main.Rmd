@@ -84,7 +84,7 @@ extra_label <- read.csv(train_label_path, colClasses=c("NULL", NA, NA))
   + Output: an RData file that contains extracted features and corresponding responses
 
 ```{r feature}
-source("../lib/feature3.R")
+source("../lib/feature2.R")
 tm_feature_train <- NA
 if(run.feature.train){
   tm_feature_train <- system.time(dat_train <- feature(train_LR_dir, train_HR_dir))
@@ -125,6 +125,15 @@ if(run.cv){
   }
   save(err_cv, file="../output/err_cv.RData")
 }
+
+# if(run.cv){
+#   err_cv <- array(dim=c(length(model_values), 2))
+#   for(k in 1:length(model_values)){
+#     cat("k=", k, "\n")
+#     err_cv[k,] <- xgb_cv(feat_train, label_train)
+#   }
+#   save(err_cv, file="../output/err_cv.RData")
+# }
 ```
 
 Visualize cross-validation results. 
@@ -155,6 +164,11 @@ par_best <- list(depth=model_best)
 ```{r final_train}
 tm_train=NA
 tm_train <- system.time(fit_train <- train(feat_train, label_train, par_best))
+#tm_train <- system.time(fit_train <- train(feat_train, label_train))
+
+# tm_train <- system.time(fit_train <- xgb_train(feat_train, label_train))
+
+
 save(fit_train, file="../output/fit_train.RData")
 ```
 
@@ -168,14 +182,14 @@ Feed the final training model with the completely holdout testing data.
   + Output: construct high-resolution versions for each low-resolution test image.
 ```{r superresolution}
 source("../lib/superResolution.R")
-test_dir <- "../data/test_set/" # This will be modified for different data sets.
-test_LR_dir <- paste(test_dir, "LR/", sep="")
-test_HR_dir <- paste(test_dir, "HR/", sep="")
+# test_dir <- "../data/test_set/" # This will be modified for different data sets.
+# test_LR_dir <- paste(test_dir, "LR/", sep="")
+# test_HR_dir <- paste(test_dir, "HR/", sep="")
 
 tm_test=NA
 if(run.test){
   load(file="../output/fit_train.RData")
-  tm_test <- system.time(superResolution(test_LR_dir, test_HR_dir, fit_train))
+  tm_test <- system.time(superResolution(train_LR_dir, train_HR_dir, fit_train))
 }
 ```
 
@@ -183,7 +197,7 @@ if(run.test){
 Prediction performance matters, so does the running times for constructing features and for training the model, especially when the computation resource is limited. 
 ```{r running_time}
 cat("Time for constructing training features=", tm_feature_train[1], "s \n")
-cat("Time for constructing testing features=", tm_feature_test[1], "s \n")
+#cat("Time for constructing testing features=", tm_feature_test[1], "s \n")
 cat("Time for training model=", tm_train[1], "s \n")
 cat("Time for super-resolution=", tm_test[1], "s \n")
 ```

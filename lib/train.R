@@ -5,7 +5,7 @@
 ### Author: Chengliang Tang
 ### Project 3
 
-
+######GBM########
 train <- function(dat_train, label_train, par=NULL){
   
   ### Train a Gradient Boosting Model (GBM) using processed features from training images
@@ -23,7 +23,7 @@ train <- function(dat_train, label_train, par=NULL){
   
   ### Train with gradient boosting model
   if(is.null(par)){
-    depth <- 3
+    depth <- 11
   } else {
     depth <- par$depth
   }
@@ -48,3 +48,72 @@ train <- function(dat_train, label_train, par=NULL){
   
   return(modelList)
 }
+
+
+########XGB########
+xgb_train <- function(dat_train, label_train, tune = FALSE) {
+  library(xgboost)
+  
+  if (tune) {
+    params <- xgb_para(dat_train = dat_train, label_train = label_train, K = 5, nround = 200)
+    
+    param.round <- xgb.set.M(dat_train = dat_train, label_train = label_train, M.range = c(80, 200), 
+                             max_depth = params[[2]]$max_depth, eta = params[[2]]$eta, 
+                             step = 10, K = 5)
+    
+    best_para<-list(max_depth = params[[2]]$max_depth, eta = params[[2]]$eta, nrounds = param.round[[1]], 
+                    gamma = 0, nthread = 2, subsample = 0.5,
+                    objective = "multi:softprob", num_class = 3)
+  } else {
+    # best_para<-list(max_depth = 3, eta = 0.3, nrounds = 150, gamma = 0,
+    #                 nthread = 2, subsample = 0.5,
+    #                 objective = "multi:softprob", num_class = 1)
+    
+    best_para<-list(booster = 'gblinear',
+                    objective = "reg:linear", eval_metric = 'RMSE', nrounds = 100)
+    
+  }
+  
+  modelList <- list()
+  
+  for (i in 1:12){
+    ## calculate column and channel
+    c1 <- (i-1) %% 4 + 1
+    c2 <- (i-c1) %/% 4 + 1
+    featMat <- dat_train[, , c2]
+    labMat <- label_train[, c1, c2]
+    
+    # xgbst.train <- xgb.DMatrix(data = data.matrix(featMat), label = labMat)
+    # fit_xgb <- xgboost(data = xgbst.train, params = best_para, nrounds = best_para$nrounds)
+    xgbFit = xgboost(data = as.matrix(featMat), nfold = 5, label = as.matrix(labMat), 
+                     nrounds = 2200, verbose = FALSE, objective = "reg:linear", eval_metric = "rmse", 
+                     nthread = 8, eta = 0.01, gamma = 0.0468, max_depth = 6, min_child_weight = 1.7817, 
+                     subsample = 0.5213, colsample_bytree = 0.4603)
+    
+    modelList[[i]] <- list(fit=xgbFit)
+  }
+ 
+  return(modelList)
+}
+
+#fit_train <- xgb_train(feat_train, label_train)
+
+#####test#####
+# c1 = c2 = 1
+# featMat <- feat_train[, , c2]
+# labMat <- label_train[, c1, c2]
+# 
+# best_para<-list(booster = 'gblinear',
+#                 objective = "reg:linear", eval_metric = 'RMSE', nrounds = 100)
+# xgbst.train <- xgb.DMatrix(data = data.matrix(featMat), label = labMat)
+# fit_xgb <- xgboost(data = xgbst.train, params = best_para, nrounds = best_para$nrounds)
+# 
+# 
+# xgbFit = xgboost(data = as.matrix(featMat), nfold = 5, label = as.matrix(labMat), 
+#                  nrounds = 2200, verbose = FALSE, objective = "reg:linear", eval_metric = "rmse", 
+#                  nthread = 8, eta = 0.01, gamma = 0.0468, max_depth = 6, min_child_weight = 1.7817, 
+#                  subsample = 0.5213, colsample_bytree = 0.4603)
+# 
+# preds2 <- predict(xgbFit, newdata = as.matrix(featMat))
+# library(Metrics)
+# rmse(labMat, preds2)

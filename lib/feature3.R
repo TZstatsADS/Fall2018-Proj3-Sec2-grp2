@@ -4,9 +4,9 @@
 
 ### Authors: Chengliang Tang/Tian Zheng
 ### Project 3
-LR_dir <- "/Users/siyuzhu/Documents/Github/ADS/Fall2018-Proj3-Sec2--sec2proj3_grp2/data/train_set/LR/"
-HR_dir <- "/Users/siyuzhu/Documents/Github/ADS/Fall2018-Proj3-Sec2--sec2proj3_grp2/data/train_set/HR/"
-n_points=1000
+# LR_dir <- "/Users/siyuzhu/Documents/Github/ADS/Fall2018-Proj3-Sec2--sec2proj3_grp2/data/train_set/LR/"
+# HR_dir <- "/Users/siyuzhu/Documents/Github/ADS/Fall2018-Proj3-Sec2--sec2proj3_grp2/data/train_set/HR/"
+# n_points=1000
 
 feature <- function(LR_dir, HR_dir, n_points=1000){
   
@@ -34,6 +34,7 @@ feature <- function(LR_dir, HR_dir, n_points=1000){
     ### step 1. sample n_points from imgLR
     dimLR=dim(imgLR)
     select=sample(dimLR[1]*dimLR[2],n_points)
+    #locate
     select_row=(select-1)%%dimLR[1]+1
     select_col=(select-1)%/%dimLR[1]+1
     #summary(selectLR)
@@ -64,3 +65,53 @@ feature <- function(LR_dir, HR_dir, n_points=1000){
   }
   return(list(feature = featMat, label = labMat))
 }
+
+
+
+############# RGB ##############
+feature_rgb <- function(img_dir, export=T){
+  
+  ### Input: a directory that contains images ready for processing
+  ### Output: an .RData file contains processed features for the images
+  
+  ### load libraries
+  library("EBImage")
+  library(grDevices)
+  ### Define the b=number of R, G and B
+  nR <- 10
+  nG <- 14
+  nB <- 14 
+  rBin <- seq(0, 1, length.out=nR)
+  gBin <- seq(0, 1, length.out=nG)
+  bBin <- seq(0, 1, length.out=nB)
+  mat=array()
+  freq_rgb=array()
+  img_names = list.files(img_dir)
+  img_n = length(img_names)
+  rgb_feature=matrix(nrow=img_n, ncol=nR*nG*nB)
+  
+  n_files <- length(list.files(img_dir))
+  
+  ### extract RGB features
+  for (i in 1:img_n){
+    mat <- imageData(readImage(paste0(img_dir, img_names[i])))
+    mat_as_rgb <-array(c(mat,mat,mat),dim = c(nrow(mat),ncol(mat),3))
+    freq_rgb <- as.data.frame(table(factor(findInterval(mat_as_rgb[,,1], rBin), levels=1:nR), 
+                                    factor(findInterval(mat_as_rgb[,,2], gBin), levels=1:nG),
+                                    factor(findInterval(mat_as_rgb[,,3], bBin), levels=1:nB)))
+    rgb_feature[i,] <- as.numeric(freq_rgb$Freq)/(ncol(mat)*nrow(mat)) # normalization
+    
+    mat_rgb <-mat_as_rgb
+    dim(mat_rgb) <- c(nrow(mat_as_rgb)*ncol(mat_as_rgb), 3)
+  }
+  
+  ### output RGB features
+  if(export){
+    save(rgb_feature, file = "../output/rgb_feature_new3.RData")
+  }
+  return(data.frame(rgb_feature))
+}
+
+
+
+
