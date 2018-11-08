@@ -11,10 +11,11 @@ Below is an example. If no contribution statement is provided, we will insert a 
 ---
 Sample project README statement.
 
-Project xxx
+Project 3 Predictive Analysis
 
-Team members: Avi Bond, Comma Deed, En Funn, Gem Hon
+Team members: Yang Cai, Yang Chen, Yiming Shi, Kehui Zhu, Siyu Zhu
 
-Summary: In this project, we developed a new method and improved the classification accuracy for images of cats and dogs to 99.9%
+Summary: In this project, we developed our baseline model and improved the baseline model to construct high resolution images twice as big for each test image. The goal of the project is to make the trained image as close as possible to the ground truth image.
 
-[Contribution Statement] AB, CD, EF and GH designed the study. AB and CD developed baseline classification model for evaluation. EF and GH explored feature engineering for improving the baseline model. AB, EF and GH discussed and designed the model evaluation protocol. CD carried out the computation for model evaluation. All team members contributed to the GitHub repository and prepared the presentation. All team members approve our work presented in our GitHub repository including this contribution statement.
+[Contribution Statement] 
+Yang Chen developed the CNN model. Siyu Zhu is responsible for the superResolution and xgboost model. Yiming Shi, Yang Cai and Kehui Zhu are responsible for constructing the features and developing the GBM model.
