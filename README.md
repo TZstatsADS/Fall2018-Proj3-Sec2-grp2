@@ -13,10 +13,11 @@ Term: Fall 2018
 	+ team member 4 Kehui Zhu,kz2293
 	+ team member 5 Siyu Zhu,sz2716
 
-+ Project summary: In this project, we will carry out model evaluation and selection for predictive analytics on image data. Here we evaluate different modeling/analysis strategies and decide what is the best. And the decisions are supported by sound evidence in the form of model assessment, validation and comparison. Here, PSNR is the key factor we look into. 
-++ In addition, we also need to communicate our decision and supporting evidence clearly and convincingly in an accessible fashion. We were given a training set of 3000 images to realize a super resolution algorithm (half LR and half HR). 
-++ Our proposed model is using XXXXXXXX on color (RGB) features. The model leads to XX percent error rate, with a running time of XX seconds. We also try different method such as XXXX, however they have XX error rate and running time XX seconds and perform not very well. 
-++ Additionally, we use deep convolution nerual network to evulate the prediction analysis and have around PSNR 50 and conume time 45 minutes, but it did not predict the dimension and we will not use that model here.
++ Project summary: 
+	+ In this project, we will carry out model evaluation and selection for predictive analytics on image data. Here we evaluate different modeling/analysis strategies and decide what is the best. And the decisions are supported by sound evidence in the form of model assessment, validation and comparison. Here, PSNR is the key factor we look into. 
+	+ In addition, we also need to communicate our decision and supporting evidence clearly and convincingly in an accessible fashion. We were given a training set of 3000 images to realize a super resolution algorithm (half LR and half HR). 
+	+ Our proposed model is using XXXXXXXX on color (RGB) features. The model leads to XX percent error rate, with a running time of XX seconds. We also try different method such as XXXX, however they have XX error rate and running time XX seconds and perform not very well. 
+	+ Additionally, we use deep convolution nerual network to evulate the prediction analysis and have around PSNR 50 and conume time 45 minutes, but it did not predict the dimension and we will not use that model here.
 
 
  The following charts give an exhaustive visual understanding of the performance of all the models we used using the different features we extracted.
