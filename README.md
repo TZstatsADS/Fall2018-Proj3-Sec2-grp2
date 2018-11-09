@@ -1,4 +1,4 @@
-﻿# Project: Can you unscramble a blurry image? 
+# Project: Can you unscramble a blurry image? 
 ![image](figs/example.png)
 
 ### [Full Project Description](doc/project3_desc.md)
@@ -16,16 +16,11 @@ Term: Fall 2018
 + Project summary: 
 	+ In this project, we will carry out model evaluation and selection for predictive analytics on image data. Here we evaluate different modeling/analysis strategies and decide what is the best. And the decisions are supported by sound evidence in the form of model assessment, validation and comparison. Here, PSNR is the key factor we look into. 
 	+ In addition, we also need to communicate our decision and supporting evidence clearly and convincingly in an accessible fashion. We were given a training set of 3000 images to realize a super resolution algorithm (half LR and half HR). 
-	+ Our proposed model is using GBM model on diagonal features. The model leads to 23.77 PSNR, with a running time of 48.53 seconds per 50 images. We also try different method such as xgboost model, however they have 20.9 PSNR and running time 62.47 seconds per 50 images and perform not very well. 
+	+ The baseline model is random feature extraction + GBM model. For improved model, we try different feature extraction methods, such as Canny, diagonal methods. We also try XGBOOST model. Our optimal model is using XGBOOST model on canny features, which leads to 25.15 PSNR, with a test running time of 483.39 seconds for 1500 images, whereas the baseline model is of 22.97 PSNR and 2039.34 seconds. 
 ![image](figs/example2.png)
-	+ Additionally, we use deep convolution nerual network to evulate the prediction analysis and have around PSNR 50 and conume time 45 minutes, but it did not predict the dimension and we will not use that model here.
-
-
- The following charts give an exhaustive visual understanding of the performance of all the models we used using the different features we extracted.
-
-![image](figs/GBM_1.JPG)
+	+ Additionally, we use deep convolution nerual network to evulate the prediction analysis and obtain a PSNR of around 50 and a consuming time of around 45 minutes, but it did not satisfy the requirement of expanding image dimension. Thus, we choose not to use that model here.
 	
-**Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
+**Contribution statement**:  All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
 
 
 + **Yang Cai**:  is responsible for constructing the features and developing the GBM model
@@ -36,8 +31,7 @@ Term: Fall 2018
 
 + **Kehui Zhu**:  is responsible for constructing the features and developing the GBM model
 
-+ **Siyu Zhu**: is responsible for superResolution and xgboost model.
-
++ **Siyu Zhu**: Main contributor to the baseline model (completed the feature.R and superResolution.R). Realized the XGBoost model. Assist with the SRCNN model's implementation. 
 
 References used:
 1.  https://rpubs.com/mharris/multiclass_xgboost : Perform XGBoost

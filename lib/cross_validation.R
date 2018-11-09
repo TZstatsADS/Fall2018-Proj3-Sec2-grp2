@@ -56,3 +56,4 @@ xgb_cv <- function(data.train, label.train, max_depth = 6, eta = 0.3,
   }			
   return(cv.error)
 }
+

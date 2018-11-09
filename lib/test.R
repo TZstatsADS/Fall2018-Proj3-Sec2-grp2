@@ -27,7 +27,7 @@ test <- function(modelList, dat_test){
     featMat <- dat_test[ , , c2]
     ### make predictions
     predArr[, c1, c2] <- predict(fit_train$fit, newdata=featMat, 
-                                 n.trees=fit_train$iter, type="response")
+                    n.trees=fit_train$iter, type="response")
   }
   return(predArr)
 }
@@ -59,3 +59,13 @@ xgb_test <- function(modelList, dat_test){
   }
   return(predArr)
 }
+
+
+# xgb_test<- function(xgb_fit, dat_test){
+#   
+#   library("xgboost")
+#   pred <- predict(xgb_fit, as.matrix(dat_test))
+#   pred <- matrix(pred, ncol=3, byrow=TRUE)
+#   pred_labels <- max.col(pred) - 1
+#   return(pred_labels)
+# }
