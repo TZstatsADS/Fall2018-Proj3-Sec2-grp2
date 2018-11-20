@@ -41,7 +41,7 @@ superResolution_gbm <- function(LR_dir, HR_dir, modelList){
       featMat[,  1, k] <- supp_imgLR[cbind(sample_row,sample_col + 1)] - center
       featMat[,  1, k] <- supp_imgLR[cbind(sample_row,sample_col + 2)] - center
       featMat[,  1, k] <- supp_imgLR[cbind(sample_row + 1,sample_col)] - center
-      featMat[,  1, k] <- supp_imgLR[cbind(sample_row + 2,sample_col + 2)] - center
+      featMat[,  1, k] <- supp_imgLR[cbind(sample_row + 1,sample_col + 2)] - center
       featMat[,  1, k] <- supp_imgLR[cbind(sample_row + 2,sample_col)] - center
       featMat[,  1, k] <- supp_imgLR[cbind(sample_row + 2,sample_col + 1)] - center
       featMat[,  1, k] <- supp_imgLR[cbind(sample_row + 2,sample_col + 2)] - center
@@ -57,6 +57,7 @@ superResolution_gbm <- function(LR_dir, HR_dir, modelList){
     
     imgHR_fit <- array(0, c(LR_nrow*2, LR_ncol*2, 3))
     imgHR_fit <- Image(imgHR_fit, colormode = Color)
+    
     base_row <- seq(1, 2 * LR_nrow, 2)
     base_col <- seq(1, 2 * LR_ncol, 2)
     imgHR_fit[base_row, base_col, ] <- predMat[, 1, ]
@@ -113,7 +114,7 @@ superResolution_xgboost <- function(LR_dir,HR_dir, modelList){
       featMat[,  1, k] <- supp_imgLR[cbind(sample_row,sample_col + 1)] - center
       featMat[,  1, k] <- supp_imgLR[cbind(sample_row,sample_col + 2)] - center
       featMat[,  1, k] <- supp_imgLR[cbind(sample_row + 1,sample_col)] - center
-      featMat[,  1, k] <- supp_imgLR[cbind(sample_row + 2,sample_col + 2)] - center
+      featMat[,  1, k] <- supp_imgLR[cbind(sample_row + 1,sample_col + 2)] - center
       featMat[,  1, k] <- supp_imgLR[cbind(sample_row + 2,sample_col)] - center
       featMat[,  1, k] <- supp_imgLR[cbind(sample_row + 2,sample_col + 1)] - center
       featMat[,  1, k] <- supp_imgLR[cbind(sample_row + 2,sample_col + 2)] - center
@@ -137,8 +138,9 @@ superResolution_xgboost <- function(LR_dir,HR_dir, modelList){
     imgHR_fit[base_row + 1, base_col, ] <- predMat[, 3, ]
     imgHR_fit[base_row + 1, base_col + 1, ] <- predMat[, 4, ]
     #calculate MSE and PSNR
-    mse <- sum((imgHR - imgHR_fit)^2)/(3*num_ele)
-    psnr <- 20*log10(range(imgHR)[2]) - 10*log10(mse)
+   #mse <- sum((imgHR - imgHR_fit)^2)/(3*num_ele)
+    mse <- mean((imgHR - imgHR_fit)^2)
+    psnr <- 20*log10(1) - 10*log10(mse)
     PSNR <- append(PSNR, psnr)
     #setwd(save_path)
     writeImage(imgHR_fit, paste0("../data/test_set/SR/","img_xgboost_fit_", sprintf("%04d", i), ".jpeg"))

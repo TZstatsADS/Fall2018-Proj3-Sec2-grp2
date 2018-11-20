@@ -8,14 +8,6 @@
 ######GBM########
 train <- function(dat_train, label_train, par=NULL){
   
-  ### Train a Gradient Boosting Model (GBM) using processed features from training images
-  
-  ### Input: 
-  ###  -  features from LR images 
-  ###  -  responses from HR images
-  ### Output: a list for trained models
-  
-  ### load libraries
   library("gbm")
   
   ### creat model list
@@ -23,7 +15,8 @@ train <- function(dat_train, label_train, par=NULL){
   
   ### Train with gradient boosting model
   if(is.null(par)){
-    depth <- 11
+    depth <- 1
+    
   } else {
     depth <- par$depth
   }
@@ -37,11 +30,13 @@ train <- function(dat_train, label_train, par=NULL){
     featMat <- dat_train[, , c2]
     labMat <- label_train[, c1, c2]
     fit_gbm <- gbm.fit(x=featMat, y=labMat,
-                       n.trees = 200, # 200
+                       n.trees = 100, 
                        distribution="gaussian",
-                       interaction.depth=depth, 
+                       n.minobsinnode = 14,
+                       interaction.depth=depth,
+                       keep.data = TRUE,
                        bag.fraction = 0.5,
-                       shrinkage = .1,
+                       shrinkage = .09,
                        verbose=FALSE)
     best_iter <- gbm.perf(fit_gbm, method="OOB", plot.it = FALSE)
     modelList[[i]] <- list(fit=fit_gbm, iter=best_iter)
@@ -55,23 +50,6 @@ train <- function(dat_train, label_train, par=NULL){
 xgb_train <- function(dat_train, label_train, tune = FALSE) {
   library(xgboost)
   
-  # if (tune) {
-  #   params <- xgb_para(dat_train = dat_train, label_train = label_train, K = 5, nround = 200)
-  #   
-  #   param.round <- xgb.set.M(dat_train = dat_train, label_train = label_train, M.range = c(80, 200), 
-  #                            max_depth = params[[2]]$max_depth, eta = params[[2]]$eta, 
-  #                            step = 10, K = 5)
-  #   
-  #   best_para<-list(max_depth = params[[2]]$max_depth, eta = params[[2]]$eta, nrounds = param.round[[1]], 
-  #                   gamma = 0, nthread = 2, subsample = 0.5,
-  #                   objective = "multi:softprob", num_class = 3)
-  # } else {
-  #   best_para<-list(booster = 'gblinear',
-  #                   objective = "reg:linear", eval_metric = 'RMSE', nrounds = 100)
-  # 
-  #   
-  # }
-  
   modelList <- list()
   
   for (i in 1:12){
@@ -80,12 +58,7 @@ xgb_train <- function(dat_train, label_train, tune = FALSE) {
     c2 <- (i-c1) %/% 4 + 1
     featMat <- dat_train[, , c2]
     labMat <- label_train[, c1, c2]
-    
-    # xgbFit = xgboost(data = as.matrix(featMat), nfold = 5, label = as.matrix(labMat), 
-    #                  nrounds = 100, verbose = FALSE, objective = "reg:linear", eval_metric = "rmse", 
-    #                  nthread = 8, eta = 0.01, gamma = 0.0468, max_depth = 7, lambda = 1, alpha = 0,min_child_weight = 1.7817, 
-    #                  subsample = 0.5213, colsample_bytree = 0.4603)
-    
+   
     ############
     xgbFit = xgboost(data = data.matrix(featMat),
             label = as.numeric(labMat) ,
@@ -93,7 +66,7 @@ xgb_train <- function(dat_train, label_train, tune = FALSE) {
             nrounds = 150,
             max_depth = 7,
             lambda = 0.5,
-            eta = .15,
+            eta = .5,
             gamma = .1,
             colsample_bytree = 0.4603,
             early_stopping_rounds = 30,
@@ -103,7 +76,13 @@ xgb_train <- function(dat_train, label_train, tune = FALSE) {
             alpha = 0.5,
             objective = "reg:linear")
     
-    
+    # paras<-list(objective="reg:linear",
+    #             eta=0.5, 
+    #             nthread = 2,
+    #             max.depth=8)
+    # xgbFit <- xgboost(data = data.matrix(featMat), label = as.numeric(labMat),    
+    #                    nround = 14, 
+    #                    params=paras)
 
     modelList[[i]] <- list(fit=xgbFit)
   }

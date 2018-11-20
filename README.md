@@ -16,7 +16,7 @@ Term: Fall 2018
 + Project summary: 
 	+ In this project, we will carry out model evaluation and selection for predictive analytics on image data. Here we evaluate different modeling/analysis strategies and decide what is the best. And the decisions are supported by sound evidence in the form of model assessment, validation and comparison. Here, PSNR is the key factor we look into. 
 	+ In addition, we also need to communicate our decision and supporting evidence clearly and convincingly in an accessible fashion. We were given a training set of 3000 images to realize a super resolution algorithm (half LR and half HR). 
-	+ The baseline model is random feature extraction + GBM model. For improved model, we try different feature extraction methods, such as Canny, diagonal methods. We also try XGBOOST model. Our optimal model is using XGBOOST model on canny features, which leads to 25.15 PSNR, with a test running time of 483.39 seconds for 1500 images, whereas the baseline model is of 22.97 PSNR and 2039.34 seconds. 
+	+ The baseline model is random feature extraction + GBM model. For improved model, we try different feature extraction methods, such as Canny, diagonal methods. We also try XGBOOST model. Our optimal model is using XGBOOST model on canny features, which leads to 25.23 PSNR, with a test running time of 784 seconds for 1500 images, whereas the baseline model is of 19.07427 PSNR and 2177.6 seconds. 
 ![image](figs/example2.png)
 	+ Additionally, we use deep convolution nerual network to evulate the prediction analysis and obtain a PSNR of around 50 and a consuming time of around 45 minutes, but it did not satisfy the requirement of expanding image dimension. Thus, we choose not to use that model here.
 	

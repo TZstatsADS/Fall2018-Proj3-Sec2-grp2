@@ -153,9 +153,9 @@ par_best <- list(depth=model_best)
 ```{r final_train, message=FALSE, warning=FALSE}
 tm_train=NA
 if(run.train){
-  tm_train_gbm <- system.time(fit_train_gbm <- train(feat_train, label_train, par_best))
-  #tm_train <- system.time(fit_train <- train(feat_train, label_train))
-  save(fit_train_gbm, file="../output/fit_train_gbm.RData")
+  #tm_train_gbm <- system.time(fit_train_gbm <- train(feat_train, label_train, par_best))
+  tm_train_gbm <- system.time(fit_train <- train(feat_train, label_train))
+  #save(fit_train_gbm, file="../output/fit_train_gbm.RData")
 }
 
 ```
@@ -174,7 +174,7 @@ Feed the final training model with the completely holdout testing data.
   + Input: a path that points to the folder (empty) of high-resolution test images.
   + Input: an R object that contains tuned predictors.
   + Output: construct high-resolution versions for each low-resolution test image.
-```{r superresolution}
+```{r superresolution_gbm}
 source("../lib/superResolution.R")
 test_dir <- "../data/test_set/" # This will be modified for different data sets.
 test_LR_dir <- paste(test_dir, "LR/", sep="")
@@ -184,6 +184,8 @@ if(run.test){
   load(file="../output/fit_train_gbm.RData")
   tm_test_gbm <- system.time(PSNR_gbm <- superResolution_gbm(test_LR_dir, test_HR_dir, fit_train_gbm))
 }
+```
+```{r superresolution_xgboost}
 #XGBoost test
 if(run.test){
   load(file="../output/fit_train_gbm.RData")
