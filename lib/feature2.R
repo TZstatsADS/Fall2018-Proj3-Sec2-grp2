@@ -32,7 +32,8 @@ feature <- function(LR_dir, HR_dir, n_points=1000){
     
     LR_nrow <- nrow(imgLR)
     LR_ncol <- ncol(imgLR)
-    ### step 1. sample n_points frolm imgLR
+    
+    ### step 1. sample n_points frolm imgLR (Canny + Sampling)
     s1 <- sample(which(imgLR[,,1]==1),n_points*0.6,replace=T)
     s2 <- sample(which(imgLR[,,1]==0),n_points*0.4,replace=T)
     sampled_points <- c(s1,s2)
