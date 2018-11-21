@@ -31,7 +31,7 @@ Term: Fall 2018
 
 + **Kehui Zhu**:  is responsible for constructing the features and developing the GBM model
 
-+ **Siyu Zhu**: Main contributor to the baseline model (completed the feature.R and superResolution.R). Realized the XGBoost model. Assist with the SRCNN model's implementation. 
++ **Siyu Zhu**: Main contributor to the baseline model (completed the feature.R and superResolution.R) and Optimal model(XGBoost model). Responsible for GBM and XGBoost models' parameters tuning. Assist with the SRCNN model's implementation. 
 
 References used:
 1.  https://rpubs.com/mharris/multiclass_xgboost : Perform XGBoost
